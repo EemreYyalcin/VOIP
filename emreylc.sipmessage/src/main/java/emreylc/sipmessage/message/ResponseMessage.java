@@ -1,8 +1,5 @@
 package emreylc.sipmessage.message;
 
-public class ResponseMessage extends Message{
+public class ResponseMessage extends Message {
 
-	
-	
-	
 }

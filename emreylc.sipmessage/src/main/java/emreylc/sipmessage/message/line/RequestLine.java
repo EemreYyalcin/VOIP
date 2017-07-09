@@ -5,9 +5,10 @@ import emreylc.sipmessage.message.line.uri.RequestURI;
 
 public class RequestLine {
 
-	private Method method;
-	
-	private RequestURI requestURI;
-	
-	
+    private Method method;
+
+    private RequestURI requestURI;
+
+    private String sipVersion = "2.0";
+
 }
