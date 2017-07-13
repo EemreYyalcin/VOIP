@@ -1,11 +1,10 @@
 package emreylc.sipmessage.message.header;
 
-import emreylc.sipmessage.message.line.uri.RequestURI;
+import emreylc.sipmessage.message.line.uri.SipURI;
 
 public class ContactHeader extends SipMessageHeader {
 
     private String displayName;
-    private RequestURI requestUri;
-    
-    
+    private SipURI requestUri;
+
 }

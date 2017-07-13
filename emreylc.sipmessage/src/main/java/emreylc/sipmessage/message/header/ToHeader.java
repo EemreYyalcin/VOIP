@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import emreylc.sipmessage.message.header.parameter.GenericParam;
 import emreylc.sipmessage.message.header.parameter.TagParam;
 import emreylc.sipmessage.message.line.uri.NameAddress;
-import emreylc.sipmessage.message.line.uri.RequestURI;
+import emreylc.sipmessage.message.line.uri.SipURI;
 
 public class ToHeader extends SipMessageHeader {
 
     private NameAddress nameAddress;
-    private RequestURI requestUri;
+    private SipURI sipUri;
     private ArrayList<GenericParam> genericParamList;
     private TagParam tagParam;
 
