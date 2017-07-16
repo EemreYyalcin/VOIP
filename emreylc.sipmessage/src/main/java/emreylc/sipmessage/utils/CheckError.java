@@ -8,4 +8,11 @@ public class CheckError {
 	}
     }
 
+    public static Object checkBooleanWithoutException(boolean error, Object object) {
+	if (error) {
+	    return null;
+	}
+	return object;
+    }
+
 }

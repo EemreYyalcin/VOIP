@@ -1,12 +1,11 @@
 package emreylc.sipmessage.message.header.parameter;
 
-import emreylc.sipmessage.message.line.uri.parameter.CauseParam;
-import emreylc.sipmessage.message.line.uri.parameter.TextParam;
+import emreylc.sipmessage.message.line.uri.parameter.UriParameter.UriParam;
 
 public class ReasonParam {
 
-    private CauseParam causeParam;
-    private TextParam textParam;
+    private UriParam causeParam;
+    private UriParam textParam;
     private GenericParam genericParam;
 
 }

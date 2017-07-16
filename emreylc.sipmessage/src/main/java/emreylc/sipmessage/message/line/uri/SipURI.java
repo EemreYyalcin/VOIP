@@ -4,6 +4,8 @@ import emreylc.sipmessage.log.TraceErrorLog;
 import emreylc.sipmessage.message.line.uri.element.HostPort;
 import emreylc.sipmessage.message.line.uri.element.UserInfo;
 import emreylc.sipmessage.message.line.uri.parameter.UriParameter;
+import emreylc.sipmessage.utils.CheckError;
+import emreylc.sipmessage.utils.Standarts;
 
 public class SipURI {
 
@@ -16,16 +18,16 @@ public class SipURI {
 
     public String parse(String message) {
 	try {
-	    String[] parts = message.split(" ");
+	    String[] parts = message.split(Standarts.splitWhitespace);
 	    setSipType(SipType.valueOf(parts[0]));
 	    message = message.substring(parts[0].length());
-	    try {
-		userInfo = new UserInfo();
-		
-	    } catch (Exception e) {
-		userInfo = null;
-	    }
-	    
+	    userInfo = new UserInfo();
+	    message = userInfo.parse(message);
+	    userInfo = (UserInfo) CheckError.checkBooleanWithoutException(userInfo.errorParse, userInfo);
+	    hostPort = new HostPort();
+	    message = hostPort.parse(message);
+	    CheckError.checkBoolean(hostPort.errorParse);
+
 	} catch (Exception e) {
 	    TraceErrorLog.traceError(e, 9);
 	    errorParse = true;

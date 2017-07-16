@@ -1,6 +1,8 @@
 package emreylc.sipmessage.message.line;
 
+import emreylc.sipmessage.elements.SipConstant.SipMethod;
 import emreylc.sipmessage.log.TraceErrorLog;
+import emreylc.sipmessage.utils.Standarts;
 
 public class Method {
 
@@ -9,7 +11,7 @@ public class Method {
 
     public String parse(String message) {
 	try {
-	    String[] parts = message.split(" ");
+	    String[] parts = message.split(Standarts.splitWhitespace);
 	    setSipMethod(SipMethod.valueOf(parts[0]));
 	    message = message.substring(parts[0].length());
 	    return message;
@@ -28,10 +30,6 @@ public class Method {
 	this.sipMethod = sipMethod;
     }
 
-    public enum SipMethod {
-	REGISTER, INVITE, ACK, BYE, CANCEL, OPTIONS, PRACT, SUBSCRIBE, NOTIFY, INFO, REFER, MESSAGE, UPDATE, PUBLISH
-    }
-
     @Override
     public String toString() {
 	if (sipMethod != null) {
@@ -47,6 +45,11 @@ public class Method {
 	System.out.println("method:" + method);
 	System.out.println("message:" + message);
 	System.out.println("errorParse:" + method.errorParse);
+
+	String str = "emre   yalc: tye";
+
+	System.out.println(str.substring(0, str.indexOf(":")));
+
     }
 
 }

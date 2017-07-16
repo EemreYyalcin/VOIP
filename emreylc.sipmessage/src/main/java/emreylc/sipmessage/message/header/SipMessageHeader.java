@@ -1,14 +1,72 @@
 package emreylc.sipmessage.message.header;
 
-public class SipMessageHeader {
+import java.util.Properties;
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
+import emreylc.sipmessage.message.line.uri.parameter.ParamObject;
+import emreylc.sipmessage.utils.LineUtils;
+
+public abstract class SipMessageHeader {
+
+    public boolean errorParse = false;
+    protected Properties params;
+
+    public abstract String parse(String message);
+
+    protected String addParams(String message) throws Exception {
+	int endParameterIndex = message.indexOf(";");
+	do {
+	    if (endParameterIndex == 0) {
+		message = message.substring(1);
+		endParameterIndex = message.indexOf(";");
+	    }
+	    if (endParameterIndex < 0) {
+		endParameterIndex = LineUtils.getLineEndIndex(message);
+		if (endParameterIndex == 0) {
+		    return message;
+		}
+	    }
+	    if (endParameterIndex < 0) {
+		throw new Exception();
+	    }
+	    String param = message.substring(0, endParameterIndex).trim();
+	    int equalIndex = param.indexOf("=");
+	    if (equalIndex < 0) {
+		ParamObject paramObj = new ParamObject();
+		setParameter(param, paramObj);
+	    } else {
+		String paramName = param.substring(0, equalIndex).trim();
+		String paramValue = param.substring(equalIndex + 1).trim();
+		ParamObject paramObj = new ParamObject(paramValue);
+		setParameter(paramName, paramObj);
+	    }
+	    message = message.substring(endParameterIndex);
+	    endParameterIndex = message.indexOf(";");
+	} while (true);
+    }
+
+    public void setParameter(String key, ParamObject paramObj) {
+	if (key == null) {
+	    return;
+	}
+	if (paramObj == null) {
+	    return;
+	}
+	if (params == null) {
+	    params = new Properties();
+	}
+	params.put(key, paramObj);
+    }
+
+    public ParamObject getParameter(String key) {
+	if (key == null) {
+	    return null;
+	}
+	if (params == null) {
+	    return null;
+	}
+
+	return (ParamObject) params.get(key);
+
+    }
+
 }
