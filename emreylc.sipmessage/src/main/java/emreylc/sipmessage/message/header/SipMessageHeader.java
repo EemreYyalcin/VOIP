@@ -1,6 +1,7 @@
 package emreylc.sipmessage.message.header;
 
 import java.util.Properties;
+import java.util.Set;
 
 import emreylc.sipmessage.message.line.uri.parameter.ParamObject;
 import emreylc.sipmessage.utils.LineUtils;
@@ -67,6 +68,22 @@ public abstract class SipMessageHeader {
 
 	return (ParamObject) params.get(key);
 
+    }
+
+    public String appendParameter(String headerValue) {
+	if (params == null) {
+	    return headerValue;
+	}
+	Set<Object> keys = params.keySet();
+	for (Object key : keys) {
+	    ParamObject paramObj = (ParamObject) params.get(key);
+	    if (paramObj.isJustNameParam()) {
+		headerValue += ";" + key;
+	    } else {
+		headerValue += ";" + key + "=" + paramObj.getParamValue();
+	    }
+	}
+	return headerValue;
     }
 
 }

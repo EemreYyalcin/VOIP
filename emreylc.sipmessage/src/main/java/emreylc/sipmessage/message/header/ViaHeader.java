@@ -1,11 +1,8 @@
 package emreylc.sipmessage.message.header;
 
-import java.util.Set;
-
 import emreylc.sipmessage.elements.SipConstant.Transport;
 import emreylc.sipmessage.log.TraceErrorLog;
 import emreylc.sipmessage.message.line.uri.element.HostPort;
-import emreylc.sipmessage.message.line.uri.parameter.ParamObject;
 import emreylc.sipmessage.utils.CheckError;
 import emreylc.sipmessage.utils.LineUtils;
 import emreylc.sipmessage.utils.Standarts;
@@ -77,18 +74,7 @@ public class ViaHeader extends SipMessageHeader {
 	String headerValue = "Via: " + sipProtocol;
 	headerValue += transport.toString() + " ";
 	headerValue += hostPort.toString();
-	if (params == null) {
-	    return headerValue + Standarts.CRLF;
-	}
-	Set<Object> keys = params.keySet();
-	for (Object key : keys) {
-	    ParamObject paramObj = (ParamObject) params.get(key);
-	    if (paramObj.isJustNameParam()) {
-		headerValue += ";" + key;
-	    } else {
-		headerValue += ";" + key + "=" + paramObj.getParamValue();
-	    }
-	}
+	headerValue = appendParameter(headerValue);
 	return headerValue + Standarts.CRLF;
     }
 
