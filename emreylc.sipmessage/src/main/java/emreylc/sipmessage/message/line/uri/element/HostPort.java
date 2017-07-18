@@ -1,7 +1,5 @@
 package emreylc.sipmessage.message.line.uri.element;
 
-import emreylc.sipmessage.utils.LineUtils;
-
 public class HostPort {
 
     // host [ ":" port ]
@@ -14,12 +12,14 @@ public class HostPort {
 	try {
 	    int semiColonIndex = message.indexOf(";");
 	    int lastIndex = 0;
+	    boolean lastElement = false;
 	    if (semiColonIndex > 0) {
 		lastIndex = semiColonIndex;
 	    } else {
-		lastIndex = LineUtils.getLineEndIndex(message);
+		lastIndex = message.indexOf(" ");
 		if (lastIndex <= 0) {
-		    throw new Exception();
+		    lastIndex = message.length();
+		    lastElement = true;
 		}
 	    }
 	    String hostPort = message.substring(0, lastIndex);
@@ -30,6 +30,9 @@ public class HostPort {
 	    }
 	    setHost(hostPort.substring(0, twoDotsIndex).trim());
 	    setPort(hostPort.substring(twoDotsIndex + 1).trim());
+	    if (lastElement) {
+		return "";
+	    }
 	    return message.substring(lastIndex);
 	} catch (Exception e) {
 	    errorParse = true;

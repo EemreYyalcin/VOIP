@@ -1,6 +1,6 @@
 package emreylc.sipmessage.elements;
 
-public class userInfo {
+public class UserInfo {
 
 	private String user;
 	private String password;

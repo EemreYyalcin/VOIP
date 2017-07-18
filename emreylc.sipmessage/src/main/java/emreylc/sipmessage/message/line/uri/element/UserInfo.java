@@ -1,5 +1,7 @@
 package emreylc.sipmessage.message.line.uri.element;
 
+import emreylc.sipmessage.log.TraceErrorLog;
+
 public class UserInfo {
 
     // (user/ telephonesubscriber)[ ":" password ] "@"
@@ -31,6 +33,21 @@ public class UserInfo {
 
 	}
 	return message;
+    }
+    
+    public String toString(){
+	try {
+	    String userInfo = "";
+	    userInfo += user;
+	    if (password != null) {
+		userInfo += ":" + password;
+	    }
+	    userInfo += "@";
+	    return userInfo;
+	} catch (Exception e) {
+	    TraceErrorLog.traceError(e, 8);
+	    return null;
+	}
     }
 
     public static void main(String[] args) {

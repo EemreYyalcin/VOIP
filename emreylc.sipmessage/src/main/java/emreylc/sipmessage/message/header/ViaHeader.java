@@ -92,17 +92,18 @@ public class ViaHeader extends SipMessageHeader {
 	return headerValue + Standarts.CRLF;
     }
 
-    public static void main(String[] args) {
-	String message1 = "Via: SIP/2.0/UDP 10.11.228.67:5060; branch=z9hG4bK10_16a83292baa1de54e0b7843_I\r\n";
-	String message2 = "Via: SIP/2.0/TLS client.biloxi.example.com:5061;branch=z9hG4bKnashds ;received=192.0.2.3;rport\n";
-	String message3 = "Via: SIP/2.0/UDP first.example.com: 4000;ttl=16;maddr=224.2.0.1 ;branch=z9hG4bKa7c6a8dlze.1\r\n";
-	String message4 = "Via: SIP/2.0/UDP bobspc.biloxi.com:5060\r\n";
+    public static void main(String[] args) throws InterruptedException {
+	String message1 = " SIP/2.0/UDP 10.11.228.67:5060; branch=z9hG4bK10_16a83292baa1de54e0b7843_I\r\n";
+	String message2 = " SIP/2.0/TLS client.biloxi.example.com:5061;branch=z9hG4bKnashds ;received=192.0.2.3;rport\n";
+	String message3 = " SIP/2.0/UDP first.example.com: 4000;ttl=16;maddr=224.2.0.1 ;branch=z9hG4bKa7c6a8dlze.1\r\n";
+	String message4 = " SIP/2.0/UDP bobspc.biloxi.com:5060\r\n";
 	ViaHeader viaHeader = null;
 
 	viaHeader = new ViaHeader();
 	System.out.println("message1:" + message1);
 	message1 = viaHeader.parse(message1);
-	System.out.println("message1:" + message1);
+	System.out.println("message1a:" + message1.length());
+	System.out.println("Test\r\n");
 	System.out.println("toString:" + viaHeader.toString());
 
 	viaHeader = new ViaHeader();
