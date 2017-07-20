@@ -9,10 +9,13 @@ public class LineUtils {
 	    return lastIndex;
 	}
 	lastIndex = line.indexOf(Standarts.LF);
+	if (lastIndex == -1) {
+	    line.length();
+	}
 	return lastIndex;
     }
-    
-    public static String removeLineEnd(String line){
+
+    public static String removeLineEnd(String line) {
 	int lastIndex = -1;
 	lastIndex = line.indexOf(Standarts.CRLF);
 	if (lastIndex >= 0) {
@@ -20,9 +23,7 @@ public class LineUtils {
 	}
 	lastIndex = line.indexOf(Standarts.LF);
 	return line.substring(lastIndex + Standarts.LF.length());
-	
+
     }
-    
-   
 
 }

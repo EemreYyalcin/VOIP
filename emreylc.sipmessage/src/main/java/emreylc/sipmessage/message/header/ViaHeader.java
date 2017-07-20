@@ -17,7 +17,7 @@ public class ViaHeader extends SipMessageHeader {
 
     @Override
     public String parse(String message) {
-	String originalMessage = message;
+	originalMessage = message;
 	try {
 	    int sipProtocolIndex = message.indexOf(sipProtocol);
 	    if (sipProtocolIndex < 0) {
@@ -74,7 +74,7 @@ public class ViaHeader extends SipMessageHeader {
 	String headerValue = "Via: " + sipProtocol;
 	headerValue += transport.toString() + " ";
 	headerValue += hostPort.toString();
-	headerValue = appendParameter(headerValue);
+	headerValue += appendParameter();
 	return headerValue + Standarts.CRLF;
     }
 

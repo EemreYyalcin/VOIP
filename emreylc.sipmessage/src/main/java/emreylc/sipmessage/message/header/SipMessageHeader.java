@@ -10,6 +10,7 @@ public abstract class SipMessageHeader {
 
     public boolean errorParse = false;
     protected Properties params;
+    protected String originalMessage;
 
     public abstract String parse(String message);
 
@@ -70,7 +71,8 @@ public abstract class SipMessageHeader {
 
     }
 
-    public String appendParameter(String headerValue) {
+    public String appendParameter() {
+	String headerValue = "";
 	if (params == null) {
 	    return headerValue;
 	}

@@ -18,7 +18,7 @@ public class FromHeader extends SipMessageHeader {
 
     @Override
     public String parse(String message) {
-	String originalMessage = message;
+	originalMessage = message;
 	try {
 	    nameAddress = new NameAddress();
 	    message = nameAddress.parse(message);
@@ -51,7 +51,7 @@ public class FromHeader extends SipMessageHeader {
 	    if (addrSpec != null) {
 		headerValue += addrSpec.toString();
 	    }
-	    headerValue = appendParameter(headerValue);
+	    headerValue += appendParameter();
 	    headerValue += Standarts.CRLF;
 	    return headerValue;
 
@@ -62,13 +62,12 @@ public class FromHeader extends SipMessageHeader {
     }
 
     public static void main(String[] args) {
-	String message = "Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl \r\n";
-	// String message = "\"Anonymous\"
-	// <sip:anonymous@anonymous.invalid>;tag=1928301774 \r\n";
+	// String message = "Alice
+	// <sip:alice@atlanta.example.com>;tag=9fxced76sl \r\n";
 	// String message =
-	// "sip:+12125551212@server.phone2net.com;tag=887s\r\n";
-	// String message = "\"A. G. Bell\" <sip:agb@bell-telephone.com>
-	// ;tag=a48s\r\n";
+	// "\"Anonymous\"<sip:anonymous@anonymous.invalid>;tag=1928301774 \r\n";
+	// String message ="sip:+12125551212@server.phone2net.com;tag=887s\r\n";
+	String message = "\"A. G. Bell\" <sip:agb@bell-telephone.com>;tag=a48s\r\n";
 
 	FromHeader fromHeader = new FromHeader();
 	System.out.println("message:" + message);

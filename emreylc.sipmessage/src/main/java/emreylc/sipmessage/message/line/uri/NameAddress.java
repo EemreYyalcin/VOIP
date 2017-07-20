@@ -44,7 +44,9 @@ public class NameAddress {
 	    if (addrSpec == null) {
 		return null;
 	    }
+	    nameAddress += "<";
 	    nameAddress += addrSpec.toString();
+	    nameAddress += ">";
 	    return nameAddress;
 	} catch (Exception e) {
 	    return null;
