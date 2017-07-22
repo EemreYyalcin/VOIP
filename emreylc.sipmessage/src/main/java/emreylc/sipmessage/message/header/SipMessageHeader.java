@@ -31,16 +31,11 @@ public abstract class SipMessageHeader {
 		throw new Exception();
 	    }
 	    String param = message.substring(0, endParameterIndex).trim();
-	    int equalIndex = param.indexOf("=");
-	    if (equalIndex < 0) {
-		ParamObject paramObj = new ParamObject();
-		setParameter(param, paramObj);
-	    } else {
-		String paramName = param.substring(0, equalIndex).trim();
-		String paramValue = param.substring(equalIndex + 1).trim();
-		ParamObject paramObj = new ParamObject(paramValue);
-		setParameter(paramName, paramObj);
+	    ParamObject paramObj = ParamObject.createParamObj(param);
+	    if (paramObj == null) {
+		continue;
 	    }
+	    setParameter(paramObj.getParamName(), paramObj);
 	    message = message.substring(endParameterIndex);
 	    endParameterIndex = message.indexOf(";");
 	} while (true);

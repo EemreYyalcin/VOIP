@@ -10,7 +10,15 @@ public class LineUtils {
 	}
 	lastIndex = line.indexOf(Standarts.LF);
 	if (lastIndex == -1) {
-	    line.length();
+	    lastIndex = line.length();
+	}
+	return lastIndex;
+    }
+
+    public static int getParamIndexOrEndLine(String line) {
+	int lastIndex = line.indexOf(";");
+	if (lastIndex < 0) {
+	    return getLineEndIndex(line);
 	}
 	return lastIndex;
     }
