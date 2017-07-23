@@ -83,4 +83,29 @@ public abstract class SipMessageHeader {
 	return headerValue;
     }
 
+    public String justAppendParameter() {
+	String headerValue = "";
+	if (params == null) {
+	    return headerValue;
+	}
+	boolean firstElement = true;
+	Set<Object> keys = params.keySet();
+	for (Object key : keys) {
+	    ParamObject paramObj = (ParamObject) params.get(key);
+	    String tempValue;
+	    if (paramObj.isJustNameParam()) {
+		tempValue = key + "";
+	    } else {
+		tempValue = key + "=" + paramObj.getParamValue();
+	    }
+	    if (firstElement) {
+		headerValue += tempValue;
+		firstElement = false;
+	    } else {
+		headerValue += ";" + tempValue;
+	    }
+	}
+	return headerValue;
+    }
+
 }

@@ -1,33 +1,26 @@
 package emreylc.sipmessage.message.header;
 
 import emreylc.sipmessage.log.TraceErrorLog;
-import emreylc.sipmessage.message.line.uri.NameAddress;
-import emreylc.sipmessage.message.line.uri.SipURI;
+import emreylc.sipmessage.message.header.parameter.NameOrSipUriParam;
 import emreylc.sipmessage.utils.CheckError;
-import emreylc.sipmessage.utils.Standarts;
 
 public class ContactHeader extends SipMessageHeader {
 
-    private NameAddress nameAddress;
-    private SipURI addrSpec;
+    private NameOrSipUriParam nameOrSipUriParam;
 
     @Override
     public String parse(String message) {
 	String originalMessage = message;
 	try {
-	    nameAddress = new NameAddress();
-	    message = nameAddress.parse(message);
-	    if (nameAddress.errorParse) {
-		nameAddress = null;
-		addrSpec = new SipURI(false);
-		message = addrSpec.parse(message);
-		CheckError.checkBoolean(addrSpec.errorParse);
-	    }
+	    nameOrSipUriParam = new NameOrSipUriParam(false);
+	    message = nameOrSipUriParam.parse(message);
+	    CheckError.checkBoolean(nameOrSipUriParam.errorParse);
 	    message = addParams(message);
 	    return message;
 	} catch (Exception e) {
 	    TraceErrorLog.traceError(e, 5);
 	    errorParse = true;
+	    nameOrSipUriParam = null;
 	    return originalMessage;
 	}
 
@@ -36,17 +29,11 @@ public class ContactHeader extends SipMessageHeader {
     public String toString() {
 	try {
 	    String headerValue = "Contact:";
-	    if (nameAddress == null && addrSpec == null) {
+	    if (nameOrSipUriParam == null) {
 		return null;
 	    }
-	    if (nameAddress != null) {
-		headerValue += nameAddress.toString();
-	    }
-	    if (addrSpec != null) {
-		headerValue += addrSpec.toString();
-	    }
-	    headerValue = appendParameter();
-	    headerValue += Standarts.CRLF;
+	    headerValue += nameOrSipUriParam.toString();
+	    headerValue += appendParameter();
 	    return headerValue;
 	} catch (Exception e) {
 	    TraceErrorLog.traceError(e, 5);

@@ -75,7 +75,7 @@ public class ViaHeader extends SipMessageHeader {
 	headerValue += transport.toString() + " ";
 	headerValue += hostPort.toString();
 	headerValue += appendParameter();
-	return headerValue + Standarts.CRLF;
+	return headerValue;
     }
 
     public static void main(String[] args) throws InterruptedException {

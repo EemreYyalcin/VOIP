@@ -20,7 +20,7 @@ public class AuthenticationInfoHeader extends SipMessageHeader {
 
     @Override
     public String toString() {
-	return "Authentication-Info: " + appendParameter();
+	return "Authentication-Info: " + justAppendParameter();
     }
 
 }

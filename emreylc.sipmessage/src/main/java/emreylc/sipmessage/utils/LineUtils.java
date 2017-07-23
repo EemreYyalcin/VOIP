@@ -15,6 +15,14 @@ public class LineUtils {
 	return lastIndex;
     }
 
+    public static String getLineEndSuffix(String message) {
+	int lastIndex = message.indexOf(Standarts.CRLF);
+	if (lastIndex >= 0) {
+	    return Standarts.CRLF;
+	}
+	return Standarts.LF;
+    }
+
     public static int getParamIndexOrEndLine(String line) {
 	int lastIndex = line.indexOf(";");
 	if (lastIndex < 0) {

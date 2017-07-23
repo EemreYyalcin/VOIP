@@ -1,15 +1,43 @@
 package emreylc.sipmessage.message.header;
 
-import java.util.ArrayList;
-
-import emreylc.sipmessage.message.header.parameter.GenericParam;
-import emreylc.sipmessage.message.line.uri.NameAddress;
-import emreylc.sipmessage.message.line.uri.SipURI;
+import emreylc.sipmessage.log.TraceErrorLog;
+import emreylc.sipmessage.message.header.parameter.NameOrSipUriParam;
+import emreylc.sipmessage.utils.CheckError;
 
 public class ReferedByHeader extends SipMessageHeader {
 
-    private NameAddress nameAddress;
-    private SipURI requestUri;
-    private ArrayList<GenericParam> genericParamList;
+    private NameOrSipUriParam nameOrSipUriParam;
+
+    @Override
+    public String parse(String message) {
+	originalMessage = message;
+	try {
+	    nameOrSipUriParam = new NameOrSipUriParam(false);
+	    message = nameOrSipUriParam.parse(message);
+	    CheckError.checkBoolean(nameOrSipUriParam.errorParse);
+	    message = addParams(message);
+	    return message;
+	} catch (Exception e) {
+	    TraceErrorLog.traceError(e, 5);
+	    errorParse = true;
+	    nameOrSipUriParam = null;
+	    return originalMessage;
+	}
+    }
+
+    public String toString() {
+	try {
+	    String headerValue = "Referred-By:";
+	    if (nameOrSipUriParam == null) {
+		return null;
+	    }
+	    headerValue += nameOrSipUriParam.toString();
+	    headerValue += appendParameter();
+	    return headerValue;
+	} catch (Exception e) {
+	    TraceErrorLog.traceError(e, 5);
+	    return null;
+	}
+    }
 
 }
