@@ -4,6 +4,7 @@ import emreylc.sipmessage.log.TraceErrorLog;
 import emreylc.sipmessage.message.line.uri.SipURI;
 import emreylc.sipmessage.utils.CheckError;
 import emreylc.sipmessage.utils.LineUtils;
+import emreylc.sipmessage.utils.Standarts;
 
 public class RequestLine {
 
@@ -41,6 +42,16 @@ public class RequestLine {
 
     public Method getMethod() {
 	return method;
+    }
+
+    public String toString() {
+	if (method == null || sipURI == null) {
+	    return null;
+	}
+	String message = method.toString() + Standarts.SPACE;
+	message += sipURI.toString() + Standarts.SPACE;
+	message += sipVersion + Standarts.CRLF;
+	return message;
     }
 
     public static void main(String[] args) {

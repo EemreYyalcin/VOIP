@@ -11,7 +11,7 @@ public class RequestMessage extends Message {
     private RequestLine requestLine;
 
     @Override
-    protected String parse(String message) {
+    public String parse(String message) {
 	try {
 	    String splitElement = LineUtils.getLineEndSuffix(message);
 	    String[] lines = message.split(splitElement);
@@ -39,10 +39,13 @@ public class RequestMessage extends Message {
 	return null;
     }
 
-    @Override
     public String toString() {
-	// TODO Auto-generated method stub
-	return null;
+	if (requestLine == null) {
+	    return null;
+	}
+	String message = requestLine.toString();
+	message += super.toString();
+	return message;
     }
 
 }

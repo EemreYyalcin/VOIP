@@ -1,6 +1,7 @@
 package emreylc.sipmessage.message;
 
 import java.util.Properties;
+import java.util.Set;
 
 import emreylc.sipmessage.message.header.AcceptContactHeader;
 import emreylc.sipmessage.message.header.AcceptEncodingHeader;
@@ -115,6 +116,7 @@ import emreylc.sipmessage.message.header.pheader.PServedUserHeader;
 import emreylc.sipmessage.message.header.pheader.PUserDatabaseHeader;
 import emreylc.sipmessage.message.header.pheader.PVisitedNetworkIDHeader;
 import emreylc.sipmessage.utils.CheckError;
+import emreylc.sipmessage.utils.Standarts;
 
 public abstract class Message {
 
@@ -122,7 +124,18 @@ public abstract class Message {
 
     protected abstract String parse(String message);
 
-    public abstract String toString();
+    public String toString() {
+	String message = "";
+	Set<Object> keys = headers.keySet();
+	if (keys == null) {
+	    return message;
+	}
+	for (Object key : keys) {
+	    SipMessageHeader sipMessageHeader = (SipMessageHeader) headers.get(key);
+	    message += sipMessageHeader.toString() + Standarts.CRLF;
+	}
+	return message;
+    }
 
     public boolean errorParse = false;
 
@@ -134,7 +147,7 @@ public abstract class Message {
 	    throw new Exception();
 	}
 	String headerName = parts[0].trim();
-	String headerValue = parts[1].trim();
+	String headerValue = line.substring(line.indexOf(parts[1])).trim();
 	SipMessageHeader header = null;
 
 	if (headerName.equalsIgnoreCase("From")) {

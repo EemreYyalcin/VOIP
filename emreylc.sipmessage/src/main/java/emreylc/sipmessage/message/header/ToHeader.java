@@ -34,7 +34,7 @@ public class ToHeader extends SipMessageHeader {
 		return null;
 	    }
 	    headerValue += nameOrSipUriParam.toString();
-	    headerValue = appendParameter();
+	    headerValue += appendParameter();
 	    return headerValue;
 	} catch (Exception e) {
 	    TraceErrorLog.traceError(e, 5);
