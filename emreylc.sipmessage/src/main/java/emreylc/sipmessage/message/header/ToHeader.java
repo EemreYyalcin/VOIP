@@ -29,7 +29,7 @@ public class ToHeader extends SipMessageHeader {
 
     public String toString() {
 	try {
-	    String headerValue = "To:";
+	    String headerValue = "To: ";
 	    if (nameOrSipUriParam == null) {
 		return null;
 	    }

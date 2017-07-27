@@ -68,7 +68,7 @@ public class Challenge {
 		headerValue += tempValue;
 		isFirst = false;
 	    } else {
-		headerValue += ";" + tempValue;
+		headerValue += "; " + tempValue;
 	    }
 	}
 	return headerValue;

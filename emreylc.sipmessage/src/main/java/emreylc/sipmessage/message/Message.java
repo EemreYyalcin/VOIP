@@ -1,8 +1,11 @@
 package emreylc.sipmessage.message;
 
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Set;
 
+import emreylc.sipmessage.log.LogMessage;
+import emreylc.sipmessage.log.TraceErrorLog;
 import emreylc.sipmessage.message.header.AcceptContactHeader;
 import emreylc.sipmessage.message.header.AcceptEncodingHeader;
 import emreylc.sipmessage.message.header.AcceptHeader;
@@ -122,7 +125,29 @@ public abstract class Message {
 
     private Properties headers = new Properties();
 
-    protected abstract String parse(String message);
+    public abstract String parse(String message);
+
+    public void parseLine(String[] lines) {
+	for (int i = 1; i < lines.length; i++) {
+	    try {
+		parseHeader(lines[i]);
+	    } catch (Exception e) {
+		TraceErrorLog.traceError(e, 1);
+		errorParse = true;
+		LogMessage.error("Parsing Error " + lines[i]);
+	    }
+	}
+    };
+
+    private ArrayList<ViaHeader> viaHeaderList;
+    private FromHeader fromHeader;
+    private ToHeader toHeader;
+    private CseqHeader cseqHeader;
+    private ExpiresHeader expiresHeader;
+    private ContactHeader contactHeader;
+    private ContentLengthHeader contentLengthHeader;
+    private CallIDHeader callIdHeader;
+    private ContentTypeHeader contentTypeHeader;
 
     public String toString() {
 	String message = "";
@@ -130,11 +155,31 @@ public abstract class Message {
 	if (keys == null) {
 	    return message;
 	}
+	if (viaHeaderList != null) {
+	    for (int i = 0; i < viaHeaderList.size(); i++) {
+		message += appendHeaderToString(viaHeaderList.get(i));
+	    }
+	}
+	message += appendHeaderToString(fromHeader);
+	message += appendHeaderToString(toHeader);
+	message += appendHeaderToString(cseqHeader);
+	message += appendHeaderToString(expiresHeader);
+	message += appendHeaderToString(callIdHeader);
+	message += appendHeaderToString(contactHeader);
 	for (Object key : keys) {
 	    SipMessageHeader sipMessageHeader = (SipMessageHeader) headers.get(key);
 	    message += sipMessageHeader.toString() + Standarts.CRLF;
 	}
+	message += appendHeaderToString(contentTypeHeader);
+	message += appendHeaderToString(contentLengthHeader);
 	return message;
+    }
+
+    private String appendHeaderToString(SipMessageHeader sipMessageHeader) {
+	if (sipMessageHeader == null) {
+	    return "";
+	}
+	return sipMessageHeader.toString() + Standarts.CRLF;
     }
 
     public boolean errorParse = false;
@@ -151,29 +196,65 @@ public abstract class Message {
 	SipMessageHeader header = null;
 
 	if (headerName.equalsIgnoreCase("From")) {
-	    header = new FromHeader();
+	    setFromHeader(new FromHeader());
+	    header = getFromHeader();
+	    header.parse(headerValue);
+	    CheckError.checkBoolean(header.errorParse);
+	    return;
 	} else if (headerName.equalsIgnoreCase("To")) {
-	    header = new ToHeader();
+	    setToHeader(new ToHeader());
+	    header = getToHeader();
+	    header.parse(headerValue);
+	    CheckError.checkBoolean(header.errorParse);
+	    return;
 	} else if (headerName.equalsIgnoreCase("Via")) {
 	    header = new ViaHeader();
+	    addViaParameter((ViaHeader) header);
+	    header.parse(headerValue);
+	    CheckError.checkBoolean(header.errorParse);
+	    return;
 	} else if (headerName.equalsIgnoreCase("Cseq")) {
-	    header = new CseqHeader();
+	    setCseqHeader(new CseqHeader());
+	    header = getCseqHeader();
+	    header.parse(headerValue);
+	    CheckError.checkBoolean(header.errorParse);
+	    return;
 	} else if (headerName.equalsIgnoreCase("Call-ID")) {
-	    header = new CallIDHeader();
+	    setCallIdHeader(new CallIDHeader());
+	    header = getCallIdHeader();
+	    header.parse(headerValue);
+	    CheckError.checkBoolean(header.errorParse);
+	    return;
 	} else if (headerName.equalsIgnoreCase("Allow")) {
 	    header = new AllowHeader();
 	} else if (headerName.equalsIgnoreCase("Expires")) {
-	    header = new ExpiresHeader();
+	    setExpiresHeader(new ExpiresHeader());
+	    header = getExpiresHeader();
+	    header.parse(headerValue);
+	    CheckError.checkBoolean(header.errorParse);
+	    return;
 	} else if (headerName.equalsIgnoreCase("User-Agent")) {
 	    header = new UserAgentHeader();
 	} else if (headerName.equalsIgnoreCase("Contact")) {
-	    header = new ContactHeader();
+	    setContactHeader(new ContactHeader());
+	    header = getContactHeader();
+	    header.parse(headerValue);
+	    CheckError.checkBoolean(header.errorParse);
+	    return;
 	} else if (headerName.equalsIgnoreCase("Content-Length")) {
-	    header = new ContentLengthHeader();
+	    setContentLengthHeader(new ContentLengthHeader());
+	    header = getContentLengthHeader();
+	    header.parse(headerValue);
+	    CheckError.checkBoolean(header.errorParse);
+	    return;
 	} else if (headerName.equalsIgnoreCase("Max-Forwards")) {
 	    header = new MaxForwardsHeader();
 	} else if (headerName.equalsIgnoreCase("Content-Type")) {
-	    header = new ContentTypeHeader();
+	    setContentTypeHeader(new ContentTypeHeader());
+	    header = getContentTypeHeader();
+	    header.parse(headerValue);
+	    CheckError.checkBoolean(header.errorParse);
+	    return;
 	} else if (headerName.equalsIgnoreCase("WWW-Authenticate")) {
 	    header = new WWWAuthenticateHeader();
 	} else if (headerName.equalsIgnoreCase("Route")) {
@@ -382,7 +463,116 @@ public abstract class Message {
 	}
 	header.parse(headerValue);
 	CheckError.checkBoolean(header.errorParse);
-	headers.put(headerName, header);
+	headers.put(headerName.toLowerCase(), header);
+    }
+
+    public Properties getHeaders() {
+	return headers;
+    }
+
+    public void addViaParameter(ViaHeader viaHeader) {
+	if (viaHeaderList == null) {
+	    viaHeaderList = new ArrayList<ViaHeader>();
+	}
+	viaHeaderList.add(viaHeader);
+    }
+
+    public ViaHeader getViaHeader(int index) {
+	if (viaHeaderList == null) {
+	    return null;
+	}
+	return viaHeaderList.get(index);
+    }
+
+    public void setHeaders(Properties headers) {
+	this.headers = headers;
+    }
+
+    public FromHeader getFromHeader() {
+	return fromHeader;
+    }
+
+    public void setFromHeader(FromHeader fromHeader) {
+	this.fromHeader = fromHeader;
+    }
+
+    public ToHeader getToHeader() {
+	return toHeader;
+    }
+
+    public void setToHeader(ToHeader toHeader) {
+	this.toHeader = toHeader;
+    }
+
+    public CseqHeader getCseqHeader() {
+	return cseqHeader;
+    }
+
+    public void setCseqHeader(CseqHeader cseqHeader) {
+	this.cseqHeader = cseqHeader;
+    }
+
+    public ExpiresHeader getExpiresHeader() {
+	return expiresHeader;
+    }
+
+    public void setExpiresHeader(ExpiresHeader expiresHeader) {
+	this.expiresHeader = expiresHeader;
+    }
+
+    public ContactHeader getContactHeader() {
+	return contactHeader;
+    }
+
+    public void setContactHeader(ContactHeader contactHeader) {
+	this.contactHeader = contactHeader;
+    }
+
+    public ContentLengthHeader getContentLengthHeader() {
+	return contentLengthHeader;
+    }
+
+    public void setContentLengthHeader(ContentLengthHeader contentLengthHeader) {
+	this.contentLengthHeader = contentLengthHeader;
+    }
+
+    public CallIDHeader getCallIdHeader() {
+	return callIdHeader;
+    }
+
+    public void setCallIdHeader(CallIDHeader callIdHeader) {
+	this.callIdHeader = callIdHeader;
+    }
+
+    public ContentTypeHeader getContentTypeHeader() {
+	return contentTypeHeader;
+    }
+
+    public void setContentTypeHeader(ContentTypeHeader contentTypeHeader) {
+	this.contentTypeHeader = contentTypeHeader;
+    }
+
+    public boolean isErrorParse() {
+	return errorParse;
+    }
+
+    public void setErrorParse(boolean errorParse) {
+	this.errorParse = errorParse;
+    }
+
+    public String getOriginalMessage() {
+	return originalMessage;
+    }
+
+    public void setOriginalMessage(String originalMessage) {
+	this.originalMessage = originalMessage;
+    }
+
+    public static Message createRequestOrResponseMessage(String message) {
+	if (message.trim().startsWith("SIP/2.0")) {
+	    return new ResponseMessage();
+	}
+	return new RequestMessage();
     }
 
 }

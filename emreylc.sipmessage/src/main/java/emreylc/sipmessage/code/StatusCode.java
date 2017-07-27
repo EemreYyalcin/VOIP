@@ -16,6 +16,10 @@ public class StatusCode {
 	this.statusCode = statusCode;
     }
 
+    public String getStatusCodeName() {
+	return StatusCode.getStatusCodeName(statusCode);
+    }
+
     public static int trying = 100;
     public static int ringing = 180;
     public static int callIsBeingForwarded = 181;

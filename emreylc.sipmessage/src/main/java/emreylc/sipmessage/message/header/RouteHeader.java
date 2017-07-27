@@ -45,9 +45,9 @@ public class RouteHeader extends SipMessageHeader {
 	for (int i = 0; i < routeParamList.size(); ++i) {
 	    RouteParam routeParam = routeParamList.get(i);
 	    if (++i == routeParamList.size()) {
-		headerValue = routeParam.toString();
+		headerValue += routeParam.toString();
 	    } else {
-		headerValue = routeParam.toString() + ",";
+		headerValue += routeParam.toString() + ",";
 	    }
 	}
 	return headerValue;

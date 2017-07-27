@@ -32,7 +32,7 @@ public class FromHeader extends SipMessageHeader {
 
     public String toString() {
 	try {
-	    String headerValue = "From:";
+	    String headerValue = "From: ";
 	    if (nameOrSipUriParam == null) {
 		return null;
 	    }

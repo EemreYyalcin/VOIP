@@ -1,6 +1,5 @@
 package emreylc.sipmessage.message;
 
-import emreylc.sipmessage.log.LogMessage;
 import emreylc.sipmessage.log.TraceErrorLog;
 import emreylc.sipmessage.message.line.RequestLine;
 import emreylc.sipmessage.utils.CheckError;
@@ -21,15 +20,8 @@ public class RequestMessage extends Message {
 	    requestLine = new RequestLine();
 	    requestLine.parse(lines[0]);
 	    CheckError.checkBoolean(requestLine.errorParse);
-	    for (int i = 1; i < lines.length; i++) {
-		try {
-		    parseHeader(lines[i]);
-		} catch (Exception e) {
-		    TraceErrorLog.traceError(e, 1);
-		    errorParse = true;
-		    LogMessage.error("Parsing Error " + lines[i]);
-		}
-	    }
+	    super.parseLine(lines);
+	    return message;
 
 	} catch (Exception e) {
 	    TraceErrorLog.traceError(e, 1);

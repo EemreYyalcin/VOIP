@@ -28,7 +28,7 @@ public class ContactHeader extends SipMessageHeader {
 
     public String toString() {
 	try {
-	    String headerValue = "Contact:";
+	    String headerValue = "Contact: ";
 	    if (nameOrSipUriParam == null) {
 		return null;
 	    }

@@ -1,76 +1,76 @@
 <
 REGISTER sips:ss2.biloxi.example.com SIP/2.0
 Via: SIP/2.0/TLS client.biloxi.example.com:5061;branch=z9hG4bKnashds7
-Max-Forwards: 70
 From: Bob <sips:bob@biloxi.example.com>;tag=a73kszlfl
 To: Bob <sips:bob@biloxi.example.com>
+Cseq: 1 REGISTER
 Call-ID: 1j9FpLxk3uxtm8tn@biloxi.example.com
-CSeq: 1 REGISTER
-Authorization: Digest username="bob", realm="atlanta.example.com",nonce="df84f1cec4341ae6cbe5ap359a9c8e88", opaque="",uri="sips:ss2.biloxi.example.com",response="aa7ab4678258377c6f7d4be6087e2f60"
-Content-Length: 0
+Authorization: Digest realm="atlanta.example.com"; response="aa7ab4678258377c6f7d4be6087e2f60"; nonce="df84f1cec4341ae6cbe5ap359a9c8e88"; uri="sips:ss2.biloxi.example.com"; opaque=""; username="bob"
+Max-Forwards: 70
+Content-Lentgh: 0
 >
 <
 REGISTER sips:ss2.biloxi.example.com SIP/2.0
 Via: SIP/2.0/TLS client.biloxi.example.com:5061;branch=z9hG4bKnashds7;received=192.0.2.201
 From: Bob <sips:bob@biloxi.example.com>;tag=a73kszlfl
 To: Bob <sips:bob@biloxi.example.com>
+Cseq: 1 REGISTER
 Call-ID: 1j9FpLxk3uxtm8tn@biloxi.example.com
-CSeq: 1 REGISTER
 Contact: <sips:bob@client.biloxi.example.com>
-Content-Length: 0
+Content-Lentgh: 0
 >
 <
 BYE sip:alice@client.atlanta.example.com SIP/2.0
 Via: SIP/2.0/TCP client.biloxi.example.com:5060;branch=z9hG4bKnashds7
-Max-Forwards: 70
 From: Bob <sip:bob@biloxi.example.com>;tag=8321234356
 To: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
+Cseq: 1 BYE
 Call-ID: 3848276298220188511@atlanta.example.com
-CSeq: 1 BYE
-Content-Length: 0
+Max-Forwards: 70
+Content-Lentgh: 0
 >
 <
 INVITE sip:bob@biloxi.example.com SIP/2.0
 Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74b43
-Max-Forwards: 70
-Route: <sip:ss1.atlanta.example.com;lr>
 From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
 To: Bob <sip:bob@biloxi.example.com>
+Cseq: 1 INVITE
 Call-ID: 3848276298220188511@atlanta.example.com
-CSeq: 1 INVITE
 Contact: <sip:alice@client.atlanta.example.com;transport=tcp>
+Route: <sip:ss1.atlanta.example.com;lr>
+Max-Forwards: 70
 Content-Type: application/sdp
-Content-Length: 151
+Content-Lentgh: 151
 >
 <
 ACK sip:bob@biloxi.example.com SIP/2.0
 Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74b43
-Max-Forwards: 70
 From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
 To: Bob <sip:bob@biloxi.example.com>;tag=3flal12sf
+Cseq: 1 ACK
 Call-ID: 3848276298220188511@atlanta.example.com
-CSeq: 1 ACK
-Content-Length: 0
+Max-Forwards: 70
+Content-Lentgh: 0
 >
 <
 ACK sip:bob@client.biloxi.example.com SIP/2.0
 Via: SIP/2.0/TCP ss1.atlanta.example.com:5060;branch=z9hG4bK2d4790.1
 Via: SIP/2.0/TCP client.atlanta.example.com:5060;branch=z9hG4bK74b76;received=192.0.2.101
-Max-Forwards: 69
-Route: <sip:ss2.biloxi.example.com;lr>
 From: Alice <sip:alice@atlanta.example.com>;tag=9fxced76sl
 To: Bob <sip:bob@biloxi.example.com>;tag=314159
+Cseq: 2 ACK
 Call-ID: 3848276298220188511@atlanta.example.com
-CSeq: 2 ACK
-Content-Length: 0
+Route: <sip:ss2.biloxi.example.com;lr>
+Max-Forwards: 69
+Content-Lentgh: 0
 >
 <
 SIP/2.0 401 Unauthorized
 Via: SIP/2.0/TLS client.biloxi.example.com:5061;branch=z9hG4bKnashd92;received=192.0.2.201
 From: Bob <sips:bob@biloxi.example.com>;tag=JueHGuidj28dfga
 To: Bob <sips:bob@biloxi.example.com>;tag=1410948204
+Cseq: 2 REGISTER
 Call-ID: 1j9FpLxk3uxtm8tn@biloxi.example.com
-CSeq: 2 REGISTER
-WWW-Authenticate: Digest realm="atlanta.example.com", qop="auth",nonce="84f1c1ae6cbe5ua9c8e88dfa3ecm3459",opaque="", stale=FALSE, algorithm=MD5
-Content-Length: 0
+WWW-Authenticate: Digest realm="atlanta.example.com"; algorithm=MD5; stale=FALSE; nonce="84f1c1ae6cbe5ua9c8e88dfa3ecm3459"; opaque=""; qop="auth"
+Content-Lentgh: 0
 >

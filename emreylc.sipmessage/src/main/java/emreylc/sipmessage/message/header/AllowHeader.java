@@ -45,10 +45,10 @@ public class AllowHeader extends SipMessageHeader {
 	int size = allowMethodList.size();
 	for (int i = 0; i < size; ++i) {
 	    Method method = allowMethodList.get(i);
-	    if (++i == allowMethodList.size()) {
-		headerValue = method.toString();
+	    if ((i + 1) == allowMethodList.size()) {
+		headerValue += method.toString();
 	    } else {
-		headerValue = method.toString() + ",";
+		headerValue += method.toString() + ", ";
 	    }
 	}
 	return headerValue;

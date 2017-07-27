@@ -39,7 +39,7 @@ public class NameAddress {
 	try {
 	    String nameAddress = "";
 	    if (displayName != null) {
-		nameAddress += displayName;
+		nameAddress += displayName + " ";
 	    }
 	    if (addrSpec == null) {
 		return null;
