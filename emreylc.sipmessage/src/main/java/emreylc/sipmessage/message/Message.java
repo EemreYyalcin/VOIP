@@ -118,19 +118,25 @@ import emreylc.sipmessage.message.header.pheader.PRefusedURIListHeader;
 import emreylc.sipmessage.message.header.pheader.PServedUserHeader;
 import emreylc.sipmessage.message.header.pheader.PUserDatabaseHeader;
 import emreylc.sipmessage.message.header.pheader.PVisitedNetworkIDHeader;
+import emreylc.sipmessage.sdp.SDP;
 import emreylc.sipmessage.utils.CheckError;
 import emreylc.sipmessage.utils.Standarts;
 
 public abstract class Message {
 
     private Properties headers = new Properties();
+    private SDP sdp;
 
     public abstract String parse(String message);
 
     public void parseLine(String[] lines) {
 	for (int i = 1; i < lines.length; i++) {
 	    try {
-		parseHeader(lines[i]);
+		if (lines[i].length() == 0) {
+		    parseContent(lines, i + 1);
+		    return;
+		}
+		parseHeader(lines[i].trim());
 	    } catch (Exception e) {
 		TraceErrorLog.traceError(e, 1);
 		errorParse = true;
@@ -138,6 +144,15 @@ public abstract class Message {
 	    }
 	}
     };
+
+    private void parseContent(String[] lines, int i) throws Exception {
+	if (lines.length <= i) {
+	    return;
+	}
+	sdp = new SDP();
+	sdp.parse(lines, i);
+	CheckError.checkBoolean(sdp.errorParse);
+    }
 
     private ArrayList<ViaHeader> viaHeaderList;
     private FromHeader fromHeader;
@@ -168,10 +183,13 @@ public abstract class Message {
 	message += appendHeaderToString(contactHeader);
 	for (Object key : keys) {
 	    SipMessageHeader sipMessageHeader = (SipMessageHeader) headers.get(key);
-	    message += sipMessageHeader.toString() + Standarts.CRLF;
+	    message += sipMessageHeader.toString() + Standarts.LF;
 	}
 	message += appendHeaderToString(contentTypeHeader);
 	message += appendHeaderToString(contentLengthHeader);
+	if (getSdp() != null) {
+	    message += Standarts.LF + getSdp().toString();
+	}
 	return message;
     }
 
@@ -179,7 +197,7 @@ public abstract class Message {
 	if (sipMessageHeader == null) {
 	    return "";
 	}
-	return sipMessageHeader.toString() + Standarts.CRLF;
+	return sipMessageHeader.toString() + Standarts.LF;
     }
 
     public boolean errorParse = false;
@@ -573,6 +591,14 @@ public abstract class Message {
 	    return new ResponseMessage();
 	}
 	return new RequestMessage();
+    }
+
+    public SDP getSdp() {
+	return sdp;
+    }
+
+    public void setSdp(SDP sdp) {
+	this.sdp = sdp;
     }
 
 }

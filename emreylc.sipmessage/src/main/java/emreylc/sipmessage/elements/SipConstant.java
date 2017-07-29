@@ -9,13 +9,10 @@ public class SipConstant {
     public enum SipMethod {
 	REGISTER, INVITE, ACK, BYE, CANCEL, OPTIONS, PRACT, SUBSCRIBE, NOTIFY, INFO, REFER, MESSAGE, UPDATE, PUBLISH
     }
-    
+
     public enum SDPMediaType {
 	audio, video, application
     }
-    
-    public enum RtpType {
-	AVP
-    }
+
 
 }

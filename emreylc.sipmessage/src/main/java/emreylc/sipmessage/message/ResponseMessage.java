@@ -43,7 +43,7 @@ public class ResponseMessage extends Message {
 	    return null;
 	}
 	String message = sipVersion + " " + statusCode.getStatusCode() + " " + statusCode.getStatusCodeName()
-		+ Standarts.CRLF;
+		+ Standarts.LF;
 	message += super.toString();
 	return message;
     }

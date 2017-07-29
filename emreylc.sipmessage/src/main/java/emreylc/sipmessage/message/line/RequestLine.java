@@ -50,7 +50,7 @@ public class RequestLine {
 	}
 	String message = method.toString() + Standarts.SPACE;
 	message += sipURI.toString() + Standarts.SPACE;
-	message += sipVersion + Standarts.CRLF;
+	message += sipVersion + Standarts.LF;
 	return message;
     }
 

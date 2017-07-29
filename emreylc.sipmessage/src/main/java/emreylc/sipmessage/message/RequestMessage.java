@@ -18,7 +18,7 @@ public class RequestMessage extends Message {
 		throw new Exception();
 	    }
 	    requestLine = new RequestLine();
-	    requestLine.parse(lines[0]);
+	    requestLine.parse(lines[0].trim());
 	    CheckError.checkBoolean(requestLine.errorParse);
 	    super.parseLine(lines);
 	    return message;
